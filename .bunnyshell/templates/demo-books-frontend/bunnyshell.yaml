@@ -1,0 +1,24 @@
+kind: Environment
+name: Demo books frontend
+type: primary
+components:
+    -
+        kind: Application
+        name: app
+        gitRepo: 'https://github.com/mihaichitic/demo-books-frontend.git'
+        gitBranch: main
+        gitApplicationPath: ./frontend
+        dockerCompose:
+            build:
+                context: ./frontend
+                dockerfile: ./Dockerfile
+                target: dev
+            environment:
+                REACT_APP_BASE_API: 'to be provided; something like https://\{\{ components.api.ingress.hosts[0] \}\}'
+            ports:
+                - '8080:8080'
+        hosts:
+            -
+                hostname: 'app-{{ env.base_domain }}'
+                path: /
+                servicePort: 8080
